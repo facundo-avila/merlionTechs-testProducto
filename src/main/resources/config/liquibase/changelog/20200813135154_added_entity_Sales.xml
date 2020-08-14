@@ -18,6 +18,18 @@
             <column name="state" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="provider" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="delivery_date" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="paid" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="full_payment" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="product_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -45,6 +57,10 @@
                   tableName="sales">
             <column name="id" type="numeric"/>
             <column name="state" type="string"/>
+            <column name="provider" type="string"/>
+            <column name="delivery_date" type="date"/>
+            <column name="paid" type="numeric"/>
+            <column name="full_payment" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

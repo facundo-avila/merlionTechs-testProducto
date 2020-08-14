@@ -7,6 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import merliontechs.domain.enumeration.State;
 
@@ -28,6 +29,18 @@ public class Sales implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private State state;
+
+    @Column(name = "provider")
+    private String provider;
+
+    @Column(name = "delivery_date")
+    private LocalDate deliveryDate;
+
+    @Column(name = "paid")
+    private Long paid;
+
+    @Column(name = "full_payment")
+    private Long fullPayment;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "sales", allowSetters = true)
@@ -53,6 +66,58 @@ public class Sales implements Serializable {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public Sales provider(String provider) {
+        this.provider = provider;
+        return this;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    public LocalDate getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public Sales deliveryDate(LocalDate deliveryDate) {
+        this.deliveryDate = deliveryDate;
+        return this;
+    }
+
+    public void setDeliveryDate(LocalDate deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public Long getPaid() {
+        return paid;
+    }
+
+    public Sales paid(Long paid) {
+        this.paid = paid;
+        return this;
+    }
+
+    public void setPaid(Long paid) {
+        this.paid = paid;
+    }
+
+    public Long getFullPayment() {
+        return fullPayment;
+    }
+
+    public Sales fullPayment(Long fullPayment) {
+        this.fullPayment = fullPayment;
+        return this;
+    }
+
+    public void setFullPayment(Long fullPayment) {
+        this.fullPayment = fullPayment;
     }
 
     public Product getProduct() {
@@ -91,6 +156,10 @@ public class Sales implements Serializable {
         return "Sales{" +
             "id=" + getId() +
             ", state='" + getState() + "'" +
+            ", provider='" + getProvider() + "'" +
+            ", deliveryDate='" + getDeliveryDate() + "'" +
+            ", paid=" + getPaid() +
+            ", fullPayment=" + getFullPayment() +
             "}";
     }
 }

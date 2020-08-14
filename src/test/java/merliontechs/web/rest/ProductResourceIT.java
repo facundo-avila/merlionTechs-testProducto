@@ -32,6 +32,9 @@ public class ProductResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final Long DEFAULT_PRICE = 1L;
+    private static final Long UPDATED_PRICE = 2L;
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -51,7 +54,8 @@ public class ProductResourceIT {
      */
     public static Product createEntity(EntityManager em) {
         Product product = new Product()
-            .name(DEFAULT_NAME);
+            .name(DEFAULT_NAME)
+            .price(DEFAULT_PRICE);
         return product;
     }
     /**
@@ -62,7 +66,8 @@ public class ProductResourceIT {
      */
     public static Product createUpdatedEntity(EntityManager em) {
         Product product = new Product()
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .price(UPDATED_PRICE);
         return product;
     }
 
@@ -86,6 +91,7 @@ public class ProductResourceIT {
         assertThat(productList).hasSize(databaseSizeBeforeCreate + 1);
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testProduct.getPrice()).isEqualTo(DEFAULT_PRICE);
     }
 
     @Test
@@ -119,7 +125,8 @@ public class ProductResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.intValue())));
     }
     
     @Test
@@ -133,7 +140,8 @@ public class ProductResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(product.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.intValue()));
     }
     @Test
     @Transactional
@@ -156,7 +164,8 @@ public class ProductResourceIT {
         // Disconnect from session so that the updates on updatedProduct are not directly saved in db
         em.detach(updatedProduct);
         updatedProduct
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .price(UPDATED_PRICE);
 
         restProductMockMvc.perform(put("/api/products")
             .contentType(MediaType.APPLICATION_JSON)
@@ -168,6 +177,7 @@ public class ProductResourceIT {
         assertThat(productList).hasSize(databaseSizeBeforeUpdate);
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testProduct.getPrice()).isEqualTo(UPDATED_PRICE);
     }
 
     @Test

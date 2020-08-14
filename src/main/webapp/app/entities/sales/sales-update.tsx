@@ -97,6 +97,30 @@ export const SalesUpdate = (props: ISalesUpdateProps) => {
                 </AvInput>
               </AvGroup>
               <AvGroup>
+                <Label id="providerLabel" for="sales-provider">
+                  <Translate contentKey="testApp.sales.provider">Provider</Translate>
+                </Label>
+                <AvField id="sales-provider" type="text" name="provider" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="deliveryDateLabel" for="sales-deliveryDate">
+                  <Translate contentKey="testApp.sales.deliveryDate">Delivery Date</Translate>
+                </Label>
+                <AvField id="sales-deliveryDate" type="date" className="form-control" name="deliveryDate" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="paidLabel" for="sales-paid">
+                  <Translate contentKey="testApp.sales.paid">Paid</Translate>
+                </Label>
+                <AvField id="sales-paid" type="string" className="form-control" name="paid" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="fullPaymentLabel" for="sales-fullPayment">
+                  <Translate contentKey="testApp.sales.fullPayment">Full Payment</Translate>
+                </Label>
+                <AvField id="sales-fullPayment" type="string" className="form-control" name="fullPayment" />
+              </AvGroup>
+              <AvGroup>
                 <Label for="sales-product">
                   <Translate contentKey="testApp.sales.product">Product</Translate>
                 </Label>

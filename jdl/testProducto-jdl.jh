@@ -1,9 +1,14 @@
 entity Product {
-name String
+name String,
+price Long
 }
 
 entity Sales {
-state State
+state State,
+provider String,
+deliveryDate LocalDate,
+paid Long,
+fullPayment Long
 }
 
 enum State {

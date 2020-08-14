@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, ICrudGetAction } from 'react-jhipster';
+import { Translate, ICrudGetAction, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -31,6 +31,32 @@ export const SalesDetail = (props: ISalesDetailProps) => {
             </span>
           </dt>
           <dd>{salesEntity.state}</dd>
+          <dt>
+            <span id="provider">
+              <Translate contentKey="testApp.sales.provider">Provider</Translate>
+            </span>
+          </dt>
+          <dd>{salesEntity.provider}</dd>
+          <dt>
+            <span id="deliveryDate">
+              <Translate contentKey="testApp.sales.deliveryDate">Delivery Date</Translate>
+            </span>
+          </dt>
+          <dd>
+            {salesEntity.deliveryDate ? <TextFormat value={salesEntity.deliveryDate} type="date" format={APP_LOCAL_DATE_FORMAT} /> : null}
+          </dd>
+          <dt>
+            <span id="paid">
+              <Translate contentKey="testApp.sales.paid">Paid</Translate>
+            </span>
+          </dt>
+          <dd>{salesEntity.paid}</dd>
+          <dt>
+            <span id="fullPayment">
+              <Translate contentKey="testApp.sales.fullPayment">Full Payment</Translate>
+            </span>
+          </dt>
+          <dd>{salesEntity.fullPayment}</dd>
           <dt>
             <Translate contentKey="testApp.sales.product">Product</Translate>
           </dt>

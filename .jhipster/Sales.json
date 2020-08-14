@@ -5,6 +5,22 @@
       "fieldName": "state",
       "fieldType": "State",
       "fieldValues": "IN_CHARGE,SHIPPED,DELIVERED"
+    },
+    {
+      "fieldName": "provider",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "deliveryDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "paid",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "fullPayment",
+      "fieldType": "Long"
     }
   ],
   "relationships": [

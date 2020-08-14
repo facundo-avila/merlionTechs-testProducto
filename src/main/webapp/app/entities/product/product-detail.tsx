@@ -31,6 +31,12 @@ export const ProductDetail = (props: IProductDetailProps) => {
             </span>
           </dt>
           <dd>{productEntity.name}</dd>
+          <dt>
+            <span id="price">
+              <Translate contentKey="testApp.product.price">Price</Translate>
+            </span>
+          </dt>
+          <dd>{productEntity.price}</dd>
         </dl>
         <Button tag={Link} to="/product" replace color="info">
           <FontAwesomeIcon icon="arrow-left" />{' '}

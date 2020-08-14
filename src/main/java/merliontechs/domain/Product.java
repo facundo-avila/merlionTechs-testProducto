@@ -25,6 +25,9 @@ public class Product implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "price")
+    private Long price;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -45,6 +48,19 @@ public class Product implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public Product price(Long price) {
+        this.price = price;
+        return this;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -70,6 +86,7 @@ public class Product implements Serializable {
         return "Product{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", price=" + getPrice() +
             "}";
     }
 }

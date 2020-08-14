@@ -17,6 +17,10 @@
         "title": "Sales"
       },
       "state": "State",
+      "provider": "Provider",
+      "deliveryDate": "Delivery Date",
+      "paid": "Paid",
+      "fullPayment": "Full Payment",
       "product": "Product"
     }
   }

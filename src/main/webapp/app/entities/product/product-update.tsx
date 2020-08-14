@@ -81,6 +81,12 @@ export const ProductUpdate = (props: IProductUpdateProps) => {
                 </Label>
                 <AvField id="product-name" type="text" name="name" />
               </AvGroup>
+              <AvGroup>
+                <Label id="priceLabel" for="product-price">
+                  <Translate contentKey="testApp.product.price">Price</Translate>
+                </Label>
+                <AvField id="product-price" type="string" className="form-control" name="price" />
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/product" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

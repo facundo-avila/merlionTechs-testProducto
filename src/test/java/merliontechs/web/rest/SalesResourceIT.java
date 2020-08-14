@@ -14,6 +14,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,6 +34,18 @@ public class SalesResourceIT {
 
     private static final State DEFAULT_STATE = State.IN_CHARGE;
     private static final State UPDATED_STATE = State.SHIPPED;
+
+    private static final String DEFAULT_PROVIDER = "AAAAAAAAAA";
+    private static final String UPDATED_PROVIDER = "BBBBBBBBBB";
+
+    private static final LocalDate DEFAULT_DELIVERY_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_DELIVERY_DATE = LocalDate.now(ZoneId.systemDefault());
+
+    private static final Long DEFAULT_PAID = 1L;
+    private static final Long UPDATED_PAID = 2L;
+
+    private static final Long DEFAULT_FULL_PAYMENT = 1L;
+    private static final Long UPDATED_FULL_PAYMENT = 2L;
 
     @Autowired
     private SalesRepository salesRepository;
@@ -52,7 +66,11 @@ public class SalesResourceIT {
      */
     public static Sales createEntity(EntityManager em) {
         Sales sales = new Sales()
-            .state(DEFAULT_STATE);
+            .state(DEFAULT_STATE)
+            .provider(DEFAULT_PROVIDER)
+            .deliveryDate(DEFAULT_DELIVERY_DATE)
+            .paid(DEFAULT_PAID)
+            .fullPayment(DEFAULT_FULL_PAYMENT);
         return sales;
     }
     /**
@@ -63,7 +81,11 @@ public class SalesResourceIT {
      */
     public static Sales createUpdatedEntity(EntityManager em) {
         Sales sales = new Sales()
-            .state(UPDATED_STATE);
+            .state(UPDATED_STATE)
+            .provider(UPDATED_PROVIDER)
+            .deliveryDate(UPDATED_DELIVERY_DATE)
+            .paid(UPDATED_PAID)
+            .fullPayment(UPDATED_FULL_PAYMENT);
         return sales;
     }
 
@@ -87,6 +109,10 @@ public class SalesResourceIT {
         assertThat(salesList).hasSize(databaseSizeBeforeCreate + 1);
         Sales testSales = salesList.get(salesList.size() - 1);
         assertThat(testSales.getState()).isEqualTo(DEFAULT_STATE);
+        assertThat(testSales.getProvider()).isEqualTo(DEFAULT_PROVIDER);
+        assertThat(testSales.getDeliveryDate()).isEqualTo(DEFAULT_DELIVERY_DATE);
+        assertThat(testSales.getPaid()).isEqualTo(DEFAULT_PAID);
+        assertThat(testSales.getFullPayment()).isEqualTo(DEFAULT_FULL_PAYMENT);
     }
 
     @Test
@@ -120,7 +146,11 @@ public class SalesResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(sales.getId().intValue())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())));
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
+            .andExpect(jsonPath("$.[*].provider").value(hasItem(DEFAULT_PROVIDER)))
+            .andExpect(jsonPath("$.[*].deliveryDate").value(hasItem(DEFAULT_DELIVERY_DATE.toString())))
+            .andExpect(jsonPath("$.[*].paid").value(hasItem(DEFAULT_PAID.intValue())))
+            .andExpect(jsonPath("$.[*].fullPayment").value(hasItem(DEFAULT_FULL_PAYMENT.intValue())));
     }
     
     @Test
@@ -134,7 +164,11 @@ public class SalesResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(sales.getId().intValue()))
-            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()));
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
+            .andExpect(jsonPath("$.provider").value(DEFAULT_PROVIDER))
+            .andExpect(jsonPath("$.deliveryDate").value(DEFAULT_DELIVERY_DATE.toString()))
+            .andExpect(jsonPath("$.paid").value(DEFAULT_PAID.intValue()))
+            .andExpect(jsonPath("$.fullPayment").value(DEFAULT_FULL_PAYMENT.intValue()));
     }
     @Test
     @Transactional
@@ -157,7 +191,11 @@ public class SalesResourceIT {
         // Disconnect from session so that the updates on updatedSales are not directly saved in db
         em.detach(updatedSales);
         updatedSales
-            .state(UPDATED_STATE);
+            .state(UPDATED_STATE)
+            .provider(UPDATED_PROVIDER)
+            .deliveryDate(UPDATED_DELIVERY_DATE)
+            .paid(UPDATED_PAID)
+            .fullPayment(UPDATED_FULL_PAYMENT);
 
         restSalesMockMvc.perform(put("/api/sales")
             .contentType(MediaType.APPLICATION_JSON)
@@ -169,6 +207,10 @@ public class SalesResourceIT {
         assertThat(salesList).hasSize(databaseSizeBeforeUpdate);
         Sales testSales = salesList.get(salesList.size() - 1);
         assertThat(testSales.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testSales.getProvider()).isEqualTo(UPDATED_PROVIDER);
+        assertThat(testSales.getDeliveryDate()).isEqualTo(UPDATED_DELIVERY_DATE);
+        assertThat(testSales.getPaid()).isEqualTo(UPDATED_PAID);
+        assertThat(testSales.getFullPayment()).isEqualTo(UPDATED_FULL_PAYMENT);
     }
 
     @Test

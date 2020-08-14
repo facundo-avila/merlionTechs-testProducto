@@ -16,7 +16,8 @@
       "detail": {
         "title": "Product"
       },
-      "name": "Name"
+      "name": "Name",
+      "price": "Price"
     }
   }
 }

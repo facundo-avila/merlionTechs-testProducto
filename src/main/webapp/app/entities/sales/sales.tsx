@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
-import { Translate, ICrudGetAllAction } from 'react-jhipster';
+import { Translate, ICrudGetAllAction, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -40,6 +40,18 @@ export const Sales = (props: ISalesProps) => {
                   <Translate contentKey="testApp.sales.state">State</Translate>
                 </th>
                 <th>
+                  <Translate contentKey="testApp.sales.provider">Provider</Translate>
+                </th>
+                <th>
+                  <Translate contentKey="testApp.sales.deliveryDate">Delivery Date</Translate>
+                </th>
+                <th>
+                  <Translate contentKey="testApp.sales.paid">Paid</Translate>
+                </th>
+                <th>
+                  <Translate contentKey="testApp.sales.fullPayment">Full Payment</Translate>
+                </th>
+                <th>
                   <Translate contentKey="testApp.sales.product">Product</Translate>
                 </th>
                 <th />
@@ -56,6 +68,12 @@ export const Sales = (props: ISalesProps) => {
                   <td>
                     <Translate contentKey={`testApp.State.${sales.state}`} />
                   </td>
+                  <td>{sales.provider}</td>
+                  <td>
+                    {sales.deliveryDate ? <TextFormat type="date" value={sales.deliveryDate} format={APP_LOCAL_DATE_FORMAT} /> : null}
+                  </td>
+                  <td>{sales.paid}</td>
+                  <td>{sales.fullPayment}</td>
                   <td>{sales.product ? <Link to={`product/${sales.product.id}`}>{sales.product.id}</Link> : ''}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">

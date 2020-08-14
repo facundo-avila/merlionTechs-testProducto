@@ -4,6 +4,10 @@
     {
       "fieldName": "name",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "Long"
     }
   ],
   "relationships": [],
