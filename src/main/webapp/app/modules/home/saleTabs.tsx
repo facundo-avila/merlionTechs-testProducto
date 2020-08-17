@@ -6,6 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import saleState from "./sale-state.js";
 
 import SalesGrid from './sales-grid';
 
@@ -75,15 +76,15 @@ const Statebar = () => {
                 method: 'get', 
                 headers: new Headers({
                 'Authorization': `Bearer ${authToken}`, 
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json; charset=UTF-8'
                 })
             });
         
             const salesJson = await salesData.json();
 
-            setInCharge(salesJson.filter((sale) => sale.state === "IN_CHARGE"));
-            setShipped(salesJson.filter((sale) => sale.state === "SHIPPED"));
-            setDelivered(salesJson.filter((sale) => sale.state === "DELIVERED"))
+            setInCharge(salesJson.filter((sale) => sale.state === saleState.inCharge));
+            setShipped(salesJson.filter((sale) => sale.state === saleState.shipped));
+            setDelivered(salesJson.filter((sale) => sale.state === saleState.delivered))
 
             setLoading(false)
         }catch(error){
