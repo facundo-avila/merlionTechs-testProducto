@@ -66,27 +66,15 @@ const Statebar = () => {
 
     const getSales= async () =>{
         
-        const tokenBody= {
-            password: "admin",
-            username: "admin"
-        }
-
-        const tokenRequest = {
-            method: 'POST',
-            body: JSON.stringify(tokenBody),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
         
         try{
-            const tokenResponse = await fetch("http://localhost:8080/api/authenticate", tokenRequest);
-            const tokenJson = await tokenResponse.json();
+            
+            const authToken = JSON.parse(sessionStorage.getItem("jhi-authenticationToken"));
 
             const salesData =  await fetch("http://localhost:9000/api/sales",{
                 method: 'get', 
                 headers: new Headers({
-                'Authorization': 'Bearer '+tokenJson.id_token, 
+                'Authorization': `Bearer ${authToken}`, 
                 'Content-Type': 'application/x-www-form-urlencoded'
                 })
             });
@@ -99,14 +87,14 @@ const Statebar = () => {
 
             setLoading(false)
         }catch(error){
-            console.error(error)
+            console.error(error);
         }
         
     }
 
     useEffect(() => {
         getSales()
-    })
+    },[]);
 
     return (
         <div className={classes.root}>
@@ -127,8 +115,8 @@ const Statebar = () => {
             <TabPanel value={value} index={2}>
                 <SalesGrid saleList={salesDelivered} />
             </TabPanel>
-            
         </div>
+
     );
 }
 
