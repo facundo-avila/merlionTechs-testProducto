@@ -1,16 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Typography, Box } from '@material-ui/core';
 import Sale from './sale'
 
-const SalesGrid = () => {
-
-    const saleJson = {
-        id: 1,
-        provider: "alguien",
-        deliveryDate: "11-11-2020",
-        paid: 100,
-        fullPayment: 100
-    }
+const SalesGrid = ({saleList}) => {
 
     return (
         <div>
@@ -52,8 +44,12 @@ const SalesGrid = () => {
                 </Grid>
             </Box>
 
-            <Sale sale={saleJson}></Sale>
-            <Sale sale={saleJson}></Sale>
+            {
+                saleList.map(sale => (
+                    <Sale key={sale.id} sale={sale}></Sale>
+                ))
+            }
+
         </div>
     );
 }

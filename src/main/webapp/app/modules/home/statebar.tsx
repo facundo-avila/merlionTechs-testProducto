@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
 const Statebar = () => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
@@ -56,6 +57,56 @@ const Statebar = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const [loading, setLoading] = useState(true);
+    
+    const [salesInCharge, setInCharge] = useState([]);
+    const [salesShipped, setShipped] = useState([]);
+    const [salesDelivered, setDelivered] = useState([]);
+
+    const getSales= async () =>{
+        
+        const tokenBody= {
+            password: "admin",
+            username: "admin"
+        }
+
+        const tokenRequest = {
+            method: 'POST',
+            body: JSON.stringify(tokenBody),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        
+        try{
+            const tokenResponse = await fetch("http://localhost:8080/api/authenticate", tokenRequest);
+            const tokenJson = await tokenResponse.json();
+
+            const salesData =  await fetch("http://localhost:9000/api/sales",{
+                method: 'get', 
+                headers: new Headers({
+                'Authorization': 'Bearer '+tokenJson.id_token, 
+                'Content-Type': 'application/x-www-form-urlencoded'
+                })
+            });
+        
+            const salesJson = await salesData.json();
+
+            setInCharge(salesJson.filter((sale) => sale.state === "IN_CHARGE"));
+            setShipped(salesJson.filter((sale) => sale.state === "SHIPPED"));
+            setDelivered(salesJson.filter((sale) => sale.state === "DELIVERED"))
+
+            setLoading(false)
+        }catch(error){
+            console.error(error)
+        }
+        
+    }
+
+    useEffect(() => {
+        getSales()
+    })
 
     return (
         <div className={classes.root}>
@@ -66,15 +117,17 @@ const Statebar = () => {
                     <Tab label="ENTREGADO" {...a11yProps(2)} />
                 </Tabs>
             </AppBar>
+            
             <TabPanel value={value} index={0}>
-                <SalesGrid />
+                <SalesGrid saleList={salesInCharge}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <SalesGrid />
+                <SalesGrid saleList={salesShipped}/>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <SalesGrid />
+                <SalesGrid saleList={salesDelivered} />
             </TabPanel>
+            
         </div>
     );
 }
