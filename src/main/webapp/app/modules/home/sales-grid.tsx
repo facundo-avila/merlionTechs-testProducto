@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Typography, Box } from '@material-ui/core';
 import Sale from './sale'
 
-const SalesGrid = ({saleList}) => {
+const SalesGrid = ({saleList, buttonEvent}) => {
 
     return (
         <div>
@@ -46,7 +46,7 @@ const SalesGrid = ({saleList}) => {
 
             {
                 saleList.map(sale => (
-                    <Sale key={sale.id} sale={sale}></Sale>
+                    <Sale key={sale.id} sale={sale} buttonEvent={buttonEvent}></Sale>
                 ))
             }
 

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Row, Col, Alert } from 'reactstrap';
-import Statebar from './saleTabs';
+import SaleTabs from './saleTabs';
 
 import { IRootState } from 'app/shared/reducers';
 
@@ -19,7 +19,7 @@ export const Home = (props: IHomeProp) => {
       <Col md="12">
 
         {account && account.login ? (
-          <Statebar />
+          <SaleTabs />
         ) : (
             <div>
               <h2>

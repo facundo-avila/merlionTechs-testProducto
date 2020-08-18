@@ -7,6 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import saleState from "./sale-state.js";
+import {Button} from "@material-ui/core";
 
 import SalesGrid from './sales-grid';
 
@@ -51,23 +52,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Statebar = () => {
+const SaleTabs = () => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
-    const [loading, setLoading] = useState(true);
     
+    //Listas de ventas según su estado
     const [salesInCharge, setInCharge] = useState([]);
     const [salesShipped, setShipped] = useState([]);
     const [salesDelivered, setDelivered] = useState([]);
 
+    //Estado para indicar cuando se debe volver a ejecutar el useEffect
+    const [updateDetected, setUpdateDetected] = useState(null);
+
+    //Funcion para permitir que componentes hijos cambien el estado
+    const handleClick = () =>{
+        setUpdateDetected(true);
+    };
+
+    //Funcion asincrónica para obtener todas las ventas y distribuirlas entre distintas listas según su estado
     const getSales= async () =>{
-        
-        
+         
         try{
             
             const authToken = JSON.parse(sessionStorage.getItem("jhi-authenticationToken"));
@@ -84,18 +92,18 @@ const Statebar = () => {
 
             setInCharge(salesJson.filter((sale) => sale.state === saleState.inCharge));
             setShipped(salesJson.filter((sale) => sale.state === saleState.shipped));
-            setDelivered(salesJson.filter((sale) => sale.state === saleState.delivered))
+            setDelivered(salesJson.filter((sale) => sale.state === saleState.delivered));
 
-            setLoading(false)
+            setUpdateDetected(false);
         }catch(error){
             console.error(error);
         }
         
-    }
+    };
 
     useEffect(() => {
-        getSales()
-    },[]);
+        getSales();
+    },[updateDetected]);
 
     return (
         <div className={classes.root}>
@@ -108,18 +116,18 @@ const Statebar = () => {
             </AppBar>
             
             <TabPanel value={value} index={0}>
-                <SalesGrid saleList={salesInCharge}/>
+                <SalesGrid saleList={salesInCharge} buttonEvent={handleClick} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <SalesGrid saleList={salesShipped}/>
+                <SalesGrid saleList={salesShipped} buttonEvent={handleClick} />
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <SalesGrid saleList={salesDelivered} />
+                <SalesGrid saleList={salesDelivered} buttonEvent={handleClick} />
             </TabPanel>
         </div>
 
     );
 }
 
-export default Statebar;
+export default SaleTabs;
 

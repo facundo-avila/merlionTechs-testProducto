@@ -2,16 +2,10 @@ import React from 'react';
 import { Grid, Typography, Button, Box } from '@material-ui/core';
 import saleState from './sale-state'
 
-const Sale = ({ sale }) => {
+const Sale = ({ sale, buttonEvent }) => {
 
-    const saleShipped = () => {
-        alert("Venta " + sale.id + " enviada")
-
-
-    }
-
-    const saleDelivered = () => {
-
+    //Funcion para solicitar actualización del estado de una venta
+    const putSale = (saleStateParam)=>{
         const authToken = JSON.parse(sessionStorage.getItem("jhi-authenticationToken"));
 
         const saleBody = {
@@ -21,7 +15,7 @@ const Sale = ({ sale }) => {
             "paid": sale.paid,
             "product": sale.product,
             "provider": sale.provider,
-            "state": "DELIVERED"
+            "state": saleStateParam
         };
 
         const putRequest = {
@@ -33,8 +27,20 @@ const Sale = ({ sale }) => {
             body: JSON.stringify(saleBody)
         };
 
-        fetch("http://localhost:8080/api/sales",putRequest).then( res => sale.state=saleState.delivered).catch(error => error);
-    }
+        fetch("http://localhost:8080/api/sales",putRequest)
+        .then(res => buttonEvent())
+        .catch(error => error);
+    };
+
+    //Encapsulado para estado Enviado
+    const saleShipped = () => {
+        putSale(saleState.shipped);
+    };
+
+    //Encapsulado para estado Entregado
+    const saleDelivered = () => {
+        putSale(saleState.delivered);
+    };
 
     return (
         <div>
