@@ -7,7 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import saleState from "./sale-state.js";
-import {Button} from "@material-ui/core";
+import {CircularProgress } from "@material-ui/core";
 
 import SalesGrid from './sales-grid';
 
@@ -49,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
     },
+    appBar:{
+        background: '#eceff1'
+    },
 }));
 
 
@@ -68,6 +71,8 @@ const SaleTabs = () => {
     //Estado para indicar cuando se debe volver a ejecutar el useEffect
     const [updateDetected, setUpdateDetected] = useState(null);
 
+    const [isLoading, setIsLoading] = useState(null);
+
     //Funcion para permitir que componentes hijos cambien el estado
     const handleClick = () =>{
         setUpdateDetected(true);
@@ -77,7 +82,7 @@ const SaleTabs = () => {
     const getSales= async () =>{
          
         try{
-            
+            setIsLoading(true);
             const authToken = JSON.parse(sessionStorage.getItem("jhi-authenticationToken"));
 
             const salesData =  await fetch("http://localhost:9000/api/sales",{
@@ -95,6 +100,7 @@ const SaleTabs = () => {
             setDelivered(salesJson.filter((sale) => sale.state === saleState.delivered));
 
             setUpdateDetected(false);
+            setIsLoading(false);
         }catch(error){
             console.error(error);
         }
@@ -107,23 +113,36 @@ const SaleTabs = () => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
-                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                    <Tab label="ENCARGADO" {...a11yProps(0)} />
-                    <Tab label="ENVIADO" {...a11yProps(1)} />
-                    <Tab label="ENTREGADO" {...a11yProps(2)} />
-                </Tabs>
-            </AppBar>
-            
-            <TabPanel value={value} index={0}>
-                <SalesGrid saleList={salesInCharge} buttonEvent={handleClick} />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <SalesGrid saleList={salesShipped} buttonEvent={handleClick} />
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <SalesGrid saleList={salesDelivered} buttonEvent={handleClick} />
-            </TabPanel>
+            <Box ml={20} mr={20}>
+                <AppBar position="static" className={classes.appBar}>
+                    <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" indicatorColor="primary" textColor="primary">
+                        <Tab label="ENCARGADO" {...a11yProps(0)} />
+                        <Tab label="ENVIADO" {...a11yProps(1)} />
+                        <Tab label="ENTREGADO" {...a11yProps(2)} />
+                    </Tabs>
+                </AppBar>
+                
+                {isLoading ? (
+                    <Box textAlign="center">
+                         <CircularProgress />
+                    </Box>    
+                    ):
+                    (
+                    <div>
+                        <TabPanel value={value} index={0}>
+                            <SalesGrid saleList={salesInCharge} buttonEvent={handleClick} />
+                        </TabPanel>
+                        <TabPanel value={value} index={1}>
+                            <SalesGrid saleList={salesShipped} buttonEvent={handleClick} />
+                        </TabPanel>
+                        <TabPanel value={value} index={2}>
+                            <SalesGrid saleList={salesDelivered} buttonEvent={handleClick} />
+                        </TabPanel>
+                    </div>
+                    )
+                }
+                
+            </Box>
         </div>
 
     );

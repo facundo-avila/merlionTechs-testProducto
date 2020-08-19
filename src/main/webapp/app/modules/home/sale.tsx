@@ -1,8 +1,22 @@
 import React from 'react';
 import { Grid, Typography, Button, Box } from '@material-ui/core';
 import saleState from './sale-state'
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    button: {
+        backgroundColor: '#2A6A9E',
+        color: 'white',
+        "&:hover": {
+            backgroundColor: "red"
+        },
+        textTransform: 'capitalize',
+    },
+}));
 
 const Sale = ({ sale, buttonEvent }) => {
+
+    const classes = useStyles();
 
     //Funcion para solicitar actualización del estado de una venta
     const putSale = (saleStateParam)=>{
@@ -28,7 +42,8 @@ const Sale = ({ sale, buttonEvent }) => {
         };
 
         fetch("http://localhost:8080/api/sales",putRequest)
-        .then(res => buttonEvent())
+        .then(res => {buttonEvent();
+                      saleStateParam === saleState.shipped ? alert(`La venta Nro ${sale.id} fue enviada correctamente`) : alert(`La venta Nro ${sale.id} fue entregada correctamente`)})
         .catch(error => error);
     };
 
@@ -79,13 +94,13 @@ const Sale = ({ sale, buttonEvent }) => {
                     <Grid item xs={2}>
                         {sale.state === saleState.inCharge ? 
                         (
-                        <Button variant="contained" color="primary" onClick={saleShipped}>
+                        <Button variant="contained" className={classes.button} onClick={saleShipped}>
                             Enviar
                         </Button>
                         ):
                         (sale.state === saleState.shipped ? 
                             (
-                            <Button variant="contained" color="primary" onClick={saleDelivered}>
+                            <Button variant="contained" className={classes.button} onClick={saleDelivered}>
                                 Entregar
                             </Button>
                             ):
@@ -98,7 +113,6 @@ const Sale = ({ sale, buttonEvent }) => {
                     </Grid>
                 </Grid>
             </Box>
-
         </div>
     );
 }
