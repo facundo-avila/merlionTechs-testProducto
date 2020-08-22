@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { Row, Col, Alert } from 'reactstrap';
-import SaleTabs from './saleTabs';
+import SaleTabs from './sale-tabs';
 
 import { IRootState } from 'app/shared/reducers';
 
