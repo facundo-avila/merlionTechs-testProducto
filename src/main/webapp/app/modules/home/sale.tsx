@@ -2,15 +2,20 @@ import React from 'react';
 import { Grid, Typography, Button, Box } from '@material-ui/core';
 import saleState from './sale-state'
 import { makeStyles } from '@material-ui/core/styles';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 
 const useStyles = makeStyles((theme) => ({
     button: {
         backgroundColor: '#2A6A9E',
         color: 'white',
         "&:hover": {
-            backgroundColor: "red"
+            backgroundColor: "#5E99C5"
         },
         textTransform: 'capitalize',
+    },
+    buttonIcons: {
+        margin: theme.spacing(0.4),
     },
 }));
 
@@ -60,7 +65,7 @@ const Sale = ({ sale, buttonEvent }) => {
     return (
         <div>
             <Box borderTop={2} borderColor="grey.200" m={1} p={1} textAlign="center">
-                <Grid container spacing={2}>
+                <Grid container spacing={4} justify="center" alignItems="center">
                     <Grid item xs={2} >
                         <Typography variant="body1" color="initial">
                             {sale.id}
@@ -95,17 +100,17 @@ const Sale = ({ sale, buttonEvent }) => {
                         {sale.state === saleState.inCharge ? 
                         (
                         <Button variant="contained" className={classes.button} onClick={saleShipped}>
-                            Enviar
+                            Enviar <LocalShippingIcon className={classes.buttonIcons} />
                         </Button>
                         ):
                         (sale.state === saleState.shipped ? 
                             (
                             <Button variant="contained" className={classes.button} onClick={saleDelivered}>
-                                Entregar
+                                 Entregar <CheckCircleIcon className={classes.buttonIcons} />
                             </Button>
                             ):
                             (   
-                            ""
+                                <CheckCircleIcon className={classes.buttonIcons} />
                             )
 
                          )}
